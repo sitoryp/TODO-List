@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="sitosmobiledevelopment.todolist.MainActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/addTaskLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_background"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp">
+
+        <LinearLayout
+            android:id="@+id/addTaskHolder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true">
+
+            <EditText
+                android:id="@+id/addTaskText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="9"
+                android:hint="@string/another_task" />
+
+
+            <Button
+                android:id="@+id/addButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/plus_sign"
+                android:background="@drawable/gradient_button_background" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/listViewLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignLeft="@+id/addTaskHolder"
+            android:layout_alignStart="@+id/addTaskHolder"
+            android:layout_above="@+id/save_load"
+            android:layout_below="@+id/addTaskHolder">
+
+            <ListView
+                android:id="@+id/todoListView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true" />
+
+
+        </RelativeLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:id="@+id/save_load"
+                android:layout_alignParentBottom="true"
+                android:layout_alignLeft="@+id/listViewLayout"
+                android:layout_alignStart="@+id/listViewLayout">
+
+                <Button
+                    android:id="@+id/saveButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/save"
+                    android:padding="5dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/gradient_button_background"/>
+
+                <Button
+                    android:id="@+id/loadButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/load"
+                    android:padding="5dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/gradient_button_background"/>
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+    </RelativeLayout>
