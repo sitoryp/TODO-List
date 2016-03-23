@@ -16,21 +16,25 @@ import java.util.ArrayList;
  */
 class CustomAdapter extends ArrayAdapter<ListItemModel> {
 
-    public CustomAdapter(Context context, ArrayList<ListItemModel> todoTasks ) {
-        super(context,R.layout.custom_row, todoTasks);
+    public ArrayList<ListItemModel> mListItems;
+
+    public CustomAdapter(Context context, ArrayList<ListItemModel> todoTasks) {
+        super(context, R.layout.custom_row, todoTasks);
+        mListItems = todoTasks;
     }
 
     class ViewHolder {
         TextView todoText;
         CheckBox complete;
-        ViewHolder(View view){
+
+        ViewHolder(View view) {
             todoText = (TextView) view.findViewById(R.id.ToDoText);
             complete = (CheckBox) view.findViewById(R.id.CompleteCheckBox);
         }
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(int position, View convertView, ViewGroup parent) {
 
         View customView = convertView;
         ViewHolder holder = null;
@@ -40,11 +44,11 @@ class CustomAdapter extends ArrayAdapter<ListItemModel> {
             customView = todoInflater.inflate(R.layout.custom_row, parent, false);
             holder = new ViewHolder(customView);
             customView.setTag(holder);
-            Log.d("VIVZ","Created a View Row!");
-        }
-        else {
+            Log.d("VIVZ", "Created a View Row!");
+        } else {
             holder = (ViewHolder) customView.getTag();
         }
+
         ListItemModel todoTask = getItem(position);
 
         holder.todoText.setText(todoTask.text);
@@ -53,8 +57,4 @@ class CustomAdapter extends ArrayAdapter<ListItemModel> {
         return customView;
 
     }
-
-
-
-
 }

@@ -16,6 +16,11 @@ public class ListItemModel {
         this.text = text;
     }
 
+    public ListItemModel(String text) {
+        this.text = text;
+        completed = false;
+    }
+
 
     public String getText() {
         return text;

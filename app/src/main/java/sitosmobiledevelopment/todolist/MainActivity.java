@@ -1,19 +1,16 @@
 package sitosmobiledevelopment.todolist;
 
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-
-import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -30,120 +27,118 @@ public class MainActivity extends AppCompatActivity {
     private EditText todoText;
     private ListView todoList;
     private Button save;
-    private final ArrayList<ListItemModel> testing = new ArrayList<>();
-    private Firebase firebaseReference;
+
+    private ArrayList<ListItemModel> mListItems = new ArrayList<>();
+    private CustomAdapter mAdapter;
+
+    private Firebase mFirebase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final ListAdapter adapter = new CustomAdapter(this, testing);
+        setUpUi();
 
+        // Set list stuff
+        mAdapter = new CustomAdapter(this, mListItems);
+        todoList.setAdapter(mAdapter);
+
+        /* FIREBASE STUFF HERE */
+
+        setUpFirebase();
+    }
+
+    public void setUpFirebase() {
         Firebase.setAndroidContext(this);
 
         SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
         String id = preferences.getString("id", null);
 
-
         if (id == null) {
-            Firebase reference = new Firebase("https://flickering-heat-8688.firebaseio.com/").push();
-            firebaseReference = reference;
-            id = reference.getKey();
+            // Create a new firebase ref
+            mFirebase = new Firebase("https://flickering-heat-8688.firebaseio.com/").push();
+
+            id = mFirebase.getKey();
             SharedPreferences.Editor editor = getSharedPreferences(PREFS, MODE_PRIVATE).edit();
-            editor.putString("id", id);
-            editor.apply();
-        }else {
-            Firebase reference = new Firebase("https://flickering-heat-8688.firebaseio.com/"+id);
-            firebaseReference = reference;
-            reference.addValueEventListener(new ValueEventListener() {
+            editor.putString("id", id).apply();
+        } else {
+            // Get your firebase ref from sharedprefs ref
+            mFirebase = new Firebase("https://flickering-heat-8688.firebaseio.com/" + id);
+
+            mFirebase.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
-                        ListItemModel task = postSnapShot.getValue(ListItemModel.class);
-                        testing.add(task);
-                        todoList.setAdapter(adapter);
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        ListItemModel task = snapshot.getValue(ListItemModel.class);
+                        mListItems.add(task);
                     }
-                    Toast.makeText(getBaseContext(), "Your ToDo List has successfully loaded!", Toast.LENGTH_LONG).show();
+
+                    refreshAdapter();
                 }
 
                 @Override
                 public void onCancelled(FirebaseError firebaseError) {
-                    Toast.makeText(getBaseContext(), "We were unable to load your ToDo List successfully!", Toast.LENGTH_LONG).show();
-                }
 
+                }
             });
-            reference.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-
-                }
-            })
         }
+    }
 
+    public void addTaskToList(ListItemModel task) {
+        mListItems.add(task);
+        Toast.makeText(getBaseContext(), "Added task to local list", Toast.LENGTH_LONG).show();
+    }
+
+    public void pushToFirebase(){
+        mFirebase.setValue(mListItems);
+        Toast.makeText(getBaseContext(), "Your new task has been added!", Toast.LENGTH_LONG).show();
+    }
+
+    public void refreshAdapter() {
+        // mAdapter.mListItems.clear();
+
+        // for (ListItemModel t : mListItems) {
+         //    mAdapter.mListItems.add(t);
+       // }
+
+        mAdapter.notifyDataSetChanged();
+    }
+
+    public void setUpUi() {
         addButton = (Button)  findViewById(R.id.addButton);
+        save = (Button) findViewById(R.id.saveButton);
         complete = (CheckBox) findViewById(R.id.CompleteCheckBox);
         todoText = (EditText) findViewById(R.id.addTaskText);
         todoList = (ListView) findViewById(R.id.todoListView);
 
-
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ListItemModel listItem = new ListItemModel(todoText.getText().toString(), false);
-                testing.add(listItem);
+                ListItemModel listItem = new ListItemModel(todoText.getText().toString());
+                addTaskToList(listItem);
+                refreshAdapter();
+
                 todoText.setText("");
-                addItemToFirebase();
             }
         });
-
-        save = (Button) findViewById(R.id.saveButton);
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firebaseReference.setValue(testing);
+                mFirebase.setValue(mListItems);
                 Toast.makeText(getBaseContext(), "Your ToDo List has been saved!", Toast.LENGTH_LONG).show();
             }
         });
 
-//         TODO finish setting on item click listener up...
         todoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                ListItemModel update = new ListItemModel(todoText.getText().toString(), true);
-                testing.set(position, update);
-                addItemToFirebase();
+                ListItemModel listItem = mListItems.get(position);
+                listItem.completed = !listItem.completed;
+                refreshAdapter();
             }
         });
-
-    }
-
-    public void addItemToFirebase(){
-        firebaseReference.setValue(testing);
-        Toast.makeText(getBaseContext(), "Your new task has been added!", Toast.LENGTH_LONG).show();
-        testing.clear();
     }
 }
 
