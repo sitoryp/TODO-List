@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:id="@+id/customRow">
 
-
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,5 +21,6 @@
         android:layout_marginLeft="10dp"
         android:textSize="18sp"
         android:paddingTop="15dp"
-        android:paddingBottom="5dp" />
+        android:paddingBottom="5dp"
+        android:textColor="@color/green"/>
 </LinearLayout>
