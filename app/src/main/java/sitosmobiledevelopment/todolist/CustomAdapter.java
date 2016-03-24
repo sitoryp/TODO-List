@@ -1,13 +1,16 @@
 package sitosmobiledevelopment.todolist;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -26,15 +29,25 @@ class CustomAdapter extends ArrayAdapter<ListItemModel> {
     class ViewHolder {
         TextView todoText;
         CheckBox complete;
+        Button delete;
 
         ViewHolder(View view) {
             todoText = (TextView) view.findViewById(R.id.ToDoText);
             complete = (CheckBox) view.findViewById(R.id.CompleteCheckBox);
+            delete = (Button) view.findViewById(R.id.deleteButton);
+
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getContext(), "button clicked!", Toast.LENGTH_LONG).show();
+                }
+            });
+
         }
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         View customView = convertView;
         ViewHolder holder = null;
@@ -44,7 +57,6 @@ class CustomAdapter extends ArrayAdapter<ListItemModel> {
             customView = todoInflater.inflate(R.layout.custom_row, parent, false);
             holder = new ViewHolder(customView);
             customView.setTag(holder);
-            Log.d("VIVZ", "Created a View Row!");
         } else {
             holder = (ViewHolder) customView.getTag();
         }

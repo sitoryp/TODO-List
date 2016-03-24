@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText todoText;
     private ListView todoList;
     private Button save;
+    private Button delete;
 
     private ArrayList<ListItemModel> mListItems = new ArrayList<>();
     private CustomAdapter mAdapter;
@@ -102,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         save = (Button) findViewById(R.id.saveButton);
         todoText = (EditText) findViewById(R.id.addTaskText);
         todoList = (ListView) findViewById(R.id.todoListView);
+//        delete = (Button) findViewById(R.id.deleteButton);
 
 
         addButton.setOnClickListener(new View.OnClickListener() {
