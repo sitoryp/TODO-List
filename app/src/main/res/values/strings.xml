@@ -4,4 +4,5 @@
     <string name="another_task">Another Task?</string>
     <string name="save">SAVE</string>
     <string name="load">LOAD</string>
+    <string name="delete">DELETE</string>
 </resources>

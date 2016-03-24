@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void addTaskToList(ListItemModel task) {
         mListItems.add(task);
-        Toast.makeText(getBaseContext(), "Added task to local list", Toast.LENGTH_LONG).show();
     }
 
     public void pushToFirebase(){
@@ -111,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 ListItemModel listItem = new ListItemModel(todoText.getText().toString());
                 addTaskToList(listItem);
                 refreshAdapter();
+                pushToFirebase();
 
                 todoText.setText("");
             }
@@ -129,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                ListItemModel listItem = mListItems.get(position);
                listItem.completed = !listItem.completed;
-               Toast.makeText(getBaseContext(), "Clicked List Item", Toast.LENGTH_LONG).show();
                refreshAdapter();
            }
        });
