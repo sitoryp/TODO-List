@@ -21,9 +21,12 @@ class CustomAdapter extends ArrayAdapter<ListItemModel> {
 
     public ArrayList<ListItemModel> mListItems;
 
+    private Context mContext;
+
     public CustomAdapter(Context context, ArrayList<ListItemModel> todoTasks) {
         super(context, R.layout.custom_row, todoTasks);
         mListItems = todoTasks;
+        mContext = context;
     }
 
     class ViewHolder {
@@ -39,6 +42,7 @@ class CustomAdapter extends ArrayAdapter<ListItemModel> {
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ((MainActivity) mContext).deleteTask(1);
                     Toast.makeText(getContext(), "button clicked!", Toast.LENGTH_LONG).show();
                 }
             });
@@ -56,7 +60,16 @@ class CustomAdapter extends ArrayAdapter<ListItemModel> {
             LayoutInflater todoInflater = LayoutInflater.from(getContext());
             customView = todoInflater.inflate(R.layout.custom_row, parent, false);
             holder = new ViewHolder(customView);
+            holder.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((MainActivity) mContext).deleteTask(position);
+                    Toast.makeText(getContext(), "button clicked!", Toast.LENGTH_LONG).show();
+                }
+            });
+
             customView.setTag(holder);
+
         } else {
             holder = (ViewHolder) customView.getTag();
         }

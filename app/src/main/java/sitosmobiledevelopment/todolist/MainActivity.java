@@ -84,6 +84,12 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
+    public void deleteTask(int position){
+        mListItems.remove(position);
+        refreshAdapter();
+        pushToFirebase();
+        Toast.makeText(getBaseContext(),"Your task item has been removed!", Toast.LENGTH_LONG).show();
+    }
 
     public void addTaskToList(ListItemModel task) {
         mListItems.add(task);
@@ -104,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
         todoText = (EditText) findViewById(R.id.addTaskText);
         todoList = (ListView) findViewById(R.id.todoListView);
 //        delete = (Button) findViewById(R.id.deleteButton);
-
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
