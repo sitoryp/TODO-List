@@ -83,15 +83,7 @@
                     android:layout_marginRight="10dp"
                     android:background="@drawable/gradient_button_background"/>
 
-                <Button
-                    android:id="@+id/loadButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/load"
-                    android:padding="5dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@drawable/gradient_button_background"/>
+
 
             </LinearLayout>
 

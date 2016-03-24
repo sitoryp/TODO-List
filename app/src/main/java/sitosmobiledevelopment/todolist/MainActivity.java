@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String PREFS = "TodoFile";
 
     private Button addButton;
-    private CheckBox complete;
     private EditText todoText;
     private ListView todoList;
     private Button save;
@@ -96,21 +95,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void refreshAdapter() {
-        // mAdapter.mListItems.clear();
-
-        // for (ListItemModel t : mListItems) {
-         //    mAdapter.mListItems.add(t);
-       // }
-
         mAdapter.notifyDataSetChanged();
     }
 
     public void setUpUi() {
         addButton = (Button)  findViewById(R.id.addButton);
         save = (Button) findViewById(R.id.saveButton);
-        complete = (CheckBox) findViewById(R.id.CompleteCheckBox);
         todoText = (EditText) findViewById(R.id.addTaskText);
         todoList = (ListView) findViewById(R.id.todoListView);
+
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,14 +124,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        todoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ListItemModel listItem = mListItems.get(position);
-                listItem.completed = !listItem.completed;
-                refreshAdapter();
-            }
-        });
+       todoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+           @Override
+           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               ListItemModel listItem = mListItems.get(position);
+               listItem.completed = !listItem.completed;
+               Toast.makeText(getBaseContext(), "Clicked List Item", Toast.LENGTH_LONG).show();
+               refreshAdapter();
+           }
+       });
     }
 }
 
