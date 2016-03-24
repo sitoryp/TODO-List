@@ -1,8 +1,6 @@
 package sitosmobiledevelopment.todolist;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +41,6 @@ class CustomAdapter extends ArrayAdapter<ListItemModel> {
                 @Override
                 public void onClick(View v) {
                     ((MainActivity) mContext).deleteTask(1);
-                    Toast.makeText(getContext(), "button clicked!", Toast.LENGTH_LONG).show();
                 }
             });
 
